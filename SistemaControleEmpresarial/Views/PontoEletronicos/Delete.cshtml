@@ -1,0 +1,51 @@
+﻿@model SistemaControleEmpresarial.Models.PontoEletronico
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PontoEletronico</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraPrimeiraEntrada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraPrimeiraEntrada)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraPrimeiraSaida)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraPrimeiraSaida)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraSegundaEntrada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraSegundaEntrada)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraSegundaSaida)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraSegundaSaida)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CodigoPontoEletronico" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

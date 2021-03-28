@@ -1,0 +1,82 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Criar Novo Usuário</h2>
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm())
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Criar Novo Usuário</h4>
+            </div>
+
+            @Html.AntiForgeryToken()
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label asp-for="Input.NomeUsuario" class="control-label col-md-2"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Input.NomeUsuario" autofocus class="form-control" />
+                                <span asp-validation-for="Input.NomeUsuario" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.CPF" onkeypress="MascaraCPF(this);" onblur="MascaraCPF(this);" class="control-label col-md-2"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Input.CPF" onkeypress="MascaraCPF(this);" onblur="MascaraCPF(this);" class="form-control" />
+                                <span asp-validation-for="Input.CPF" onkeypress="MascaraCPF(this);" onblur="MascaraCPF(this);" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email" class="control-label col-md-2"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Input.Email" class="form-control" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Password" class="control-label col-md-2"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Input.Password" class="form-control" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.ConfirmPassword" class="control-label col-md-2"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Telefone" onkeypress="MascaraTelefone(this);" onblur="MascaraTelefone(this);" class="control-label col-md-2"></label>
+                            <div class="col-md-10">
+                                <input asp-for="Input.Telefone" onkeypress="MascaraTelefone(this);" onblur="MascaraTelefone(this);" class="form-control" />
+                                <span asp-validation-for="Input.Telefone" onkeypress="MascaraTelefone(this);" onblur="MascaraTelefone(this);" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" value="Cancelar" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
+                            <button type="submit" value="Criar" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Criar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

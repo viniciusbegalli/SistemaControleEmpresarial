@@ -1,0 +1,48 @@
+﻿@model SistemaControleEmpresarial.Models.PontoEletronico
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PontoEletronico</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraPrimeiraEntrada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraPrimeiraEntrada)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraPrimeiraSaida)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraPrimeiraSaida)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraSegundaEntrada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraSegundaEntrada)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataHoraSegundaSaida)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataHoraSegundaSaida)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CodigoPontoEletronico">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

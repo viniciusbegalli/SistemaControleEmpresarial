@@ -1,0 +1,91 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.PontoEletronico>
+
+@{
+    ViewData["Title"] = "MeuPontoEletronico";
+}
+
+<h2>Meus Pontos</h2>
+
+<form asp-action="RegistrarPonto">
+    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-hand-up"></i> Registrar Ponto</button>
+    @{
+        if (Model != null && Model.Count() > 0)
+        {
+            <a asp-action="ExportarExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+        }
+    }
+    <button type="button" id="btnAjuste" class="btn btn-info"><i class="glyphicon glyphicon-erase"></i> Solicitar Ajuste</button>
+</form>
+
+@Html.Raw(TempData["msgRegistroPonto"])
+
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+        <div>
+            <p>
+                Voc&ecirc; n&atilde;o possui nenhum ponto registrado.
+            </p>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Data)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataHoraPrimeiraEntrada)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataHoraPrimeiraSaida)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataHoraSegundaEntrada)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataHoraSegundaSaida)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Data)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraPrimeiraEntrada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraPrimeiraSaida)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraSegundaEntrada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraSegundaSaida)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+<div id="modal" class="modal fade" role="dialog" />
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("#btnAjuste").click(function () {
+                $("#modal").load("../AjustePontoEletronicos/SolicitarAjustePonto", function () {
+                    $("#modal").modal();
+                })
+            });
+        })
+    </script>
+}

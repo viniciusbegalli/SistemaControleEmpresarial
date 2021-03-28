@@ -1,0 +1,54 @@
+﻿@model SistemaControleEmpresarial.Models.Funcionario
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Funcionario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CodigoUsuario)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CodigoUsuario)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NomeUsuario)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NomeUsuario)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sexo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sexo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataNascimento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataNascimento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CPF)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CPF)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Telefone)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CodigoFuncionario">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

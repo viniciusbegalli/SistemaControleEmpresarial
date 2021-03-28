@@ -1,0 +1,34 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Ol&aacute; @UserManager.GetUserName(User)!</a>
+            </li>
+            @if (User.IsInRole("Administrador"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Admin" asp-action="ListRoles">
+                        Gerenciar Roles
+                    </a>
+                </li>
+            }
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link"><i class="glyphicon glyphicon-log-out"></i> Sair</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{ 
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-area="Identity" asp-page="/Account/Login">Entrar</a></li>
+        <!--<li><a asp-area="" asp-controller="Admin" asp-action="createrole">Criar Roles</a></li>-->
+    </ul>
+}
