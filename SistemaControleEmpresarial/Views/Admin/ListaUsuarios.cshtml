@@ -1,0 +1,99 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "ListaChamados";
+}
+@Html.Raw(TempData["msgListaUsuarios"])
+<h2>Usu&aacute;rios</h2>
+
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+    <a asp-action="ExportarUsuariosExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+    }
+}
+<hr />
+
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+    <div>
+        <p>
+            Nenhum usu&aacute;rio encontrado.
+        </p>
+    </div>
+    }
+    else
+    {
+    <form asp-action="ListaUsuarios">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                C&oacute;digo:
+                <input type="text" class="form-control" name="filtroCodigoUsuario" id="filtroCodigoUsuario" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                Nome:
+                <input type="text" class="form-control" name="filtroNomeUsuario" id="filtroNomeUsuario" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <br />
+                <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+            </div>
+        </div>
+    </form>
+    <br /><br /><br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    C&oacute;digo
+                </th>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CPF)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Telefone)
+                </th>
+                <th>
+                    Email
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodigoExterno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CPF)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="EditarUsuario" asp-controller="Admin" asp-route-id="@item.CodigoExterno" class="btn btn-success btn-success"><i class="glyphicon glyphicon-edit"></i> Editar</a>
+                    <a asp-action="EspelhoPontoExcel" asp-controller="Admin" asp-route-id="@item.CodigoExterno" class="btn btn-info"><i class="glyphicon glyphicon-time"></i> Espelho de Ponto</a>
+                </td>
+            </tr>
+                }
+        </tbody>
+    </table>
+
+    }
+}

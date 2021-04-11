@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using SistemaControleEmpresarial.Data;
 using SistemaControleEmpresarial.Models;
 
 namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
@@ -20,17 +22,20 @@ namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -54,7 +59,7 @@ namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
             public string Telefone { get; set; }
 
             [Required(ErrorMessage = "Campo Obrigatório")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "E-mail em formato inválido." )]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -70,6 +75,9 @@ namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
             [Display(Name = "Confirma Senha")]
             [Compare("Password", ErrorMessage = "A senha e a senha de confirmação não correspondem.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "CodigoExterno")]
+            public int CodigoExterno { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -82,11 +90,17 @@ namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
+                var usuariosCadastrados = from p in _context.Users
+                                          select p;
+
+                int qtdeUsuarios = usuariosCadastrados.Count();
+                qtdeUsuarios = qtdeUsuarios + 1;
                 var user = new ApplicationUser { UserName = Input.Email,
                                                  Email = Input.Email,
                                                  NomeUsuario = Input.NomeUsuario,
                                                  CPF = Input.CPF,
-                                                 Telefone = Input.Telefone };
+                                                 Telefone = Input.Telefone,
+                                                 CodigoExterno = qtdeUsuarios};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

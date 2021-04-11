@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.SolicitacaoJornada>
+
+@{
+    ViewData["Title"] = "SolicitacaoJornada";
+}
+@Html.Raw(TempData["msgJornadaPendente"])
+
+<h2>Jornadas Pendentes</h2>
+<div>
+    @{
+    <a asp-action="ListaJornadas" asp-controller="Feriados" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+    }
+    
+    @{
+        if (Model != null && Model.Count() > 0)
+        {
+        <a asp-action="ExportarExcelJornadasPendentes" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+        }
+    }
+</div>
+
+<hr />
+
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+    <div>
+        <p>
+            Nenhuma jornada pendente encontrada.
+        </p>
+    </div>
+    }
+    else
+    {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Solicitante
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataCriacao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Feriado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeUsuarioJornada)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.CodigoExterno) - @Html.DisplayFor(modelItem => item.ApplicationUser.NomeUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataCriacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodigoFeriado) - @Html.DisplayFor(modelItem => item.Feriado.DescricaoFeriado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodigoUsuarioJornada) - @Html.DisplayFor(modelItem => item.NomeUsuarioJornada)
+                </td>
+                <td>
+                    <a asp-action="DetalhesJornadaPendente" asp-route-id="@item.CodigoSolicitacaoJornada" class="btn btn-warning"><i class="glyphicon glyphicon-list-alt"></i> Detalhes</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+}

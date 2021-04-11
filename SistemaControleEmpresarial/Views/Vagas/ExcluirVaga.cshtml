@@ -1,0 +1,44 @@
+﻿@model SistemaControleEmpresarial.Models.Vaga
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Excluir Vaga</h2>
+
+<h3>Voc&ecirc; tem certeza que deseja excluir esta vaga ?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataCriacao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataCriacao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SituacaoVaga)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SituacaoVaga)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CodigoVaga" id="id" name="id" />
+        <a asp-action="ListaVagas" asp-controller="Vagas" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+        <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Confirmar Exclus&atilde;o</button>
+    </form>
+</div>

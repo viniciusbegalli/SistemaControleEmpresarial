@@ -12,4 +12,10 @@ namespace SistemaControleEmpresarial.Models
         public string UserName { get; set; }
         public bool IsSelected { get; set; }
     }
+
+    public class UsuariosRolesGrafico
+    {
+        public string Perfil { get; set; }
+        public int Total { get; set; }
+    }
 }

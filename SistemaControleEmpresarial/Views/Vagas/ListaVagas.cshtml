@@ -1,0 +1,147 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.Vaga>
+
+@{
+    ViewData["Title"] = "ListaVagas";
+}
+@Html.Raw(TempData["msgCriacaoVaga"])
+<h2>Vagas</h2>
+
+@if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+{
+    <a asp-action="CriarVaga" class="btn btn-primary"><i class="glyphicon glyphicon-star"></i> Criar Vaga</a>
+    if (Model != null && Model.Count() > 0)
+    {
+        <a asp-action="ExportarExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+    }
+}
+
+
+<hr />
+
+@if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+{
+    <form asp-action="ListaVagas">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                Situa&ccedil;&atilde;o:
+                <select name="situacaoVaga" id="situacaoVaga" class="form-control">
+                    <option value="" class="form-control"></option>
+                    <option value="Aberta" class="form-control">Aberta</option>
+                    <option value="Fechada" class="form-control">Fechada</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <br />
+                <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+            </div>
+        </div>
+    </form>
+    <br /><br /><br />
+}
+
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+        <div>
+            <p>
+                Nenhuma vaga encontrada.
+            </p>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CodigoVaga)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Titulo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descricao)
+                    </th>
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                    {
+                        <th>
+                            Usu&aacute;rio Cria&ccedil;&atilde;o
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DataCriacao)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SituacaoVaga)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NomeUsuarioUltimaAtualizacao)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DataHoraUltimaAlteracao)
+                        </th>
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CodigoVaga)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Titulo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApplicationUser.CodigoExterno) - @Html.DisplayFor(modelItem => item.ApplicationUser.NomeUsuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataCriacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SituacaoVaga)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodigoUsuarioUltimaAtualizacao) - @Html.DisplayFor(modelItem => item.NomeUsuarioUltimaAtualizacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataHoraUltimaAlteracao)
+                        </td>
+                    }
+                        <td>
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                            {
+                                <a asp-action="EditarVaga" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-success btn-success"><i class="glyphicon glyphicon-edit" title="Editar"></i></a>
+                                <a asp-action="ExcluirVaga" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-danger" value="@item.CodigoVaga"><i class="glyphicon glyphicon-trash" title="Excluir"></i></a>
+                                <a asp-action="ListaVagaCandidatos" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-primary"><i class="	glyphicon glyphicon-user" title="Candidatos"></i></a>
+                                @if (item.SituacaoVaga == Dominio.SituacaoVaga.Aberta)
+                                {
+                                    <a asp-action="FecharVaga" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-warning"><i class="glyphicon glyphicon-eye-close" title="Fechar Vaga"></i></a>
+                                }
+                                else
+                                {
+                                    <a asp-action="ReabrirVaga" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-warning"><i class="glyphicon glyphicon-eye-open" title="Reabrir Vaga"></i></a>
+                                }
+                                <a asp-action="DetalhesVaga" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-warning"><i class="glyphicon glyphicon-th-list" title="Detalhes"></i></a>
+                            }
+
+                            @if (!(User.IsInRole("Administrador") || User.IsInRole("Gerente")))
+                            {
+                                <a asp-action="DetalhesVaga" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-warning"><i class="glyphicon glyphicon-th-list"></i> Detalhes</a>
+                                <a asp-action="CandidatarVaga" asp-controller="Vagas" asp-route-id="@item.CodigoVaga" class="btn btn-warning"><i class="glyphicon glyphicon-star"></i> Candidatar</a>
+                            }
+                        </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

@@ -44,16 +44,30 @@ namespace SistemaControleEmpresarial.Models
         [Required(ErrorMessage = "Campo Obrigatório")]
         public DateTime HoraSegundaSaida { get; set; }
 
-        [Display(Name = "Descrição")]
+        [Display(Name = "Justificativa")]
+        [StringLength(100, ErrorMessage = "Justificativa não pode exceder 100 caracteres.")]
         [Required(ErrorMessage = "Campo Obrigatório")]
-        public string Descricao { get; set; }
+        public string Justificativa { get; set; }
 
         [Display(Name = "SituacaoAjuste")]
         public string SituacaoAjuste { get; set; }
 
         [Display(Name = "Observações")]
+        [StringLength(100, ErrorMessage = "Observações não pode exceder 100 caracteres.")]
         [Required(ErrorMessage = "Campo Obrigatório")]
         public string Observacoes { get; set; }
 
+        [Display(Name = "CodigoUsuarioAprovador")]
+        public int CodigoUsuarioAprovador { get; set; }
+
+    }
+
+    public class AjustePontoEletronicoGrafico
+    {
+        public string AnoMes { get; set; }
+        public int TotalSolicitado { get; set; }
+        public int TotalAprovado { get; set; }
+        public int TotalReprovado { get; set; }
+        public int TotalPendente { get; set; }
     }
 }

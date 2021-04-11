@@ -1,0 +1,296 @@
+﻿@model SistemaControleEmpresarial.Models.SolicitacaoJornada
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Cadastrar Solicita&ccedil;&atilde;o Jornada</h2>
+
+
+@Html.Raw(TempData["msgCriacaoJornada"])
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="SolicitarJornada">
+            <span asp-validation-for="CodigoFeriado" class="text-danger"></span>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <input asp-for="CodigoFeriado" id="codigoFeriado" placeholder="Código" class="form-control" />
+                        <!--<button type="button" value="Cancelar" id="pesquisaFeriado" class="btn btn-info" data-dismiss="modal"><i class="glyphicon glyphicon-search"></i></button>-->
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-1">
+                        <button type="button" title="Clique para abrir o modal de busca por feriados" data-toggle="modal" data-target="#myModal" id="showPop" value="Cancelar" class="btn btn-info" data-dismiss="modal"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <input asp-for="Feriado" readonly="readonly" placeholder="Feriado" id="descricaoFeriado" class="form-control" />
+                        <span asp-validation-for="Feriado" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="CodigoUsuarioJornada" class="text-danger"></span>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <input asp-for="CodigoUsuarioJornada" id="codigoUsuarioJornada" placeholder="Código" class="form-control" />
+                        <!--<button type="button" value="Cancelar" id="pesquisaFeriado" class="btn btn-info" data-dismiss="modal"><i class="glyphicon glyphicon-search"></i></button>-->
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-1">
+                        <button type="button" title="Clique para abrir o modal de busca por usuários" data-toggle="modal" data-target="#myModal2" id="showPop2" value="Cancelar" class="btn btn-info" data-dismiss="modal"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <input asp-for="NomeUsuarioJornada" readonly="readonly" placeholder="Usuário" id="descricaoUsuario" class="form-control" />
+                        <span asp-validation-for="NomeUsuarioJornada" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <span asp-validation-for="Justificativa" class="text-danger"></span>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <textarea asp-for="Justificativa" placeholder="Justificativa" id="Justificativa" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <a asp-action="ListaJornadas" asp-controller="Feriados" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+                        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-flag"></i> Criar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog   modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-calendar"></i> Busca Feriado</h4>
+            </div>
+            <div>
+                <!--<table class="table table-bordered">-->
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        De:
+                        <input type="date" class="form-control" max="9999-12-31" name="filtroDataInicio" id="filtroDataInicio" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        Até:
+                        <input type="date" class="form-control" max="9999-12-31" name="filtroDataFim" id="filtroDataFim" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        Descri&ccedil;&atilde;o do Feriado:
+                        <input type="text" class="form-control" maxlength="30" name="filtroDescricao" id="filtroDescricao" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <br />
+                        <button type="button" class="btn btn-info" id="btnPesquisarFeriado"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="tabelaDinamica"></div>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="submitModal1">Selecionar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog   modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-user"></i> Busca Usu&aacute;rio</h4>
+            </div>
+            <div>
+                <!--<table class="table table-bordered">-->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        C&oacute;digo:
+                        <input type="text" class="form-control" name="filtroCodigoUsuario" id="filtroCodigoUsuario" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        Nome:
+                        <input type="text" class="form-control" maxlength="30" name="filtroNomeUsuario" id="filtroNomeUsuario" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <br />
+                        <button type="button" class="btn btn-info" id="btnPesquisarUsuario"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="tabelaDinamicaUsuario"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="submitModal2">Selecionar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $('#codigoFeriado').change(function () {
+            var feriado = $(this).val();
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/Feriados/GetDados",
+                data: { id: feriado },
+                success: function (dados) {
+                    $(dados).each(function (i) {
+                        document.getElementById("descricaoFeriado").value = dados.Text
+                    });
+                }
+            });
+        });
+
+        $('#codigoUsuarioJornada').change(function () {
+            var feriado = $(this).val();
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/Feriados/GetDadosUsuario",
+                data: { id: feriado },
+                success: function (dados) {
+                    $(dados).each(function (i) {
+                        document.getElementById("descricaoUsuario").value = dados.Text
+                    });
+                }
+            });
+        });
+
+        $(function () {
+            $("#pesquisaFeriado").click(function () {
+                $("#modal").load("FeriadoLookup", function () {
+                    $("#modal").modal();
+                })
+            });
+        })
+
+        $(function () {
+            $('#submitModal1').click(function () {
+                var url = '@Url.Action("GetData", "Feriados")';
+
+                var radiobuttons = document.getElementsByName("feriadosRadio");
+                var radioselecionado = document.querySelectorAll('input[name=feriadosRadio]:checked')[0].value;
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: { id: radioselecionado },
+                    success: function (dado) {
+                        document.getElementById("codigoFeriado").value = radioselecionado;
+                        document.getElementById("descricaoFeriado").value = dado;
+                    }
+                });
+            });
+        })
+
+        $(function () {
+            $('#submitModal2').click(function () {
+                var url = '@Url.Action("GetDadosUsuario", "Feriados")';
+                var radiobuttons = document.getElementsByName("feriadosRadio");
+                var radioselecionado = document.querySelectorAll('input[name=usuariosRadio]:checked')[0].value;
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: { id: radioselecionado },
+                    success: function (dado) {
+                        document.getElementById("codigoUsuarioJornada").value = radioselecionado;
+                        document.getElementById("descricaoUsuario").value = dado.Text;
+                    }
+                });
+            });
+        })
+
+        $(function () {
+            $("#btnPesquisarFeriado").click(function () {
+                var filtroDataInicio = $('#filtroDataInicio').val();
+                var filtroDataFim = $('#filtroDataFim').val();
+                var filtroDescricao = $('#filtroDescricao').val();
+                var resultadoFinal;
+                $.ajax({
+                    dataType: "json",
+                    type: "GET",
+                    url: "/Feriados/ObterFeriadosLookup",
+                    data: { sDataFeriadoInicio: ((filtroDataInicio != undefined) ? filtroDataInicio : ""), sDataFeriadoFim: ((filtroDataFim != undefined) ? filtroDataFim : ""), descricaoFeriado: ((filtroDescricao != undefined) ? filtroDescricao : "") },
+                    success: function (dados) {
+                        resultadoFinal = "<table class='table'><thead><tr><th></th><th>Data do Feriado</th><th>Descri&ccedil;&atilde;o do Feriado:</th></tr></thead><tbody>"
+                        $(dados).each(function (i) {
+                            resultadoFinal += "<tr><td><input type='radio' id='feriadosRadio_" + dados[i].CodigoFeriado + "' name='feriadosRadio' value=" + dados[i].CodigoFeriado + "></td>"
+                            resultadoFinal += "<td>" + dados[i].CodigoFeriado + "</td>"
+                            resultadoFinal += "<td>" + dados[i].DescricaoFeriado + "</td></tr>"
+                        });
+                        resultadoFinal += "</tbody></table>"
+                        $("#tabelaDinamica").html(resultadoFinal);
+                    }
+                });
+            });
+        })
+
+        $(function () {
+            $("#btnPesquisarUsuario").click(function () {
+                var filtroCodigoUsuario = $('#filtroCodigoUsuario').val();
+                var filtroNomeUsuario = $('#filtroNomeUsuario').val();
+                var resultadoFinal;
+                $.ajax({
+                    dataType: "json",
+                    type: "GET",
+                    url: "/Feriados/ObterUsuariosLookup",
+                    data: { sCodigoUsuario: ((filtroCodigoUsuario != undefined) ? filtroCodigoUsuario : ""), sNomeUsuario: ((filtroNomeUsuario != undefined) ? filtroNomeUsuario : "") },
+                    success: function (dados) {
+                        resultadoFinal = "<table class='table'><thead><tr><th></th><th>C&oacute;digo</th><th>Nome Usu&aacute;rio</th></tr></thead><tbody>"
+                        $(dados).each(function (i) {
+                            resultadoFinal += "<tr><td><input type='radio' id='usuariosRadio_" + dados[i].CodigoExterno + "' name='usuariosRadio' value=" + dados[i].CodigoExterno + "></td>"
+                            resultadoFinal += "<td>" + dados[i].CodigoExterno + "</td>"
+                            resultadoFinal += "<td>" + dados[i].NomeUsuario + "</td></tr>"
+                        });
+                        resultadoFinal += "</tbody></table>"
+                        $("#tabelaDinamicaUsuario").html(resultadoFinal);
+                    }
+                });
+            });
+        })
+
+    </script>
+}

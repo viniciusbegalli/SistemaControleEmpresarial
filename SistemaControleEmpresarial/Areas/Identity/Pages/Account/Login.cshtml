@@ -21,14 +21,6 @@
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe">
-                            <input asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
                     <button type="submit" class="btn btn-success btn-success"><i class="glyphicon glyphicon-log-in"></i> Entrar</button>
                     <button type="button" class="btn btn-primary create"><i class="glyphicon glyphicon-pencil"></i> Registrar</button>
                 </div>
@@ -49,8 +41,9 @@
                 {
                     <div>
                         <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
+                            N&atilde;o h&aacute; servidores de autentica&ccedil;&atilde;o externa configurados.
+                            <!--See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+    for details on setting up this ASP.NET application to support logging in via external services.-->
                         </p>
                     </div>
                 }

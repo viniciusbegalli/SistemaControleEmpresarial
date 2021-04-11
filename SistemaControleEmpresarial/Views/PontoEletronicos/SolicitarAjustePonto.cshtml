@@ -1,13 +1,12 @@
 ﻿@model SistemaControleEmpresarial.Models.AjustePontoEletronico
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "SolicitarAjustePontoEletrônico";
 }
 
-<h2>Create</h2>
+<h2>Criar</h2>
 
-<h4>AjustePontoEletronico</h4>
-<hr />
+
 <div class="modal-dialog">
     <div class="modal-content">
         @using (Html.BeginForm())
@@ -16,15 +15,11 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">×</span><span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title">Criar Novo Usuário</h4>
+                <h4 class="modal-title">Solicitar Ajuste Ponto Eletrônico</h4>
             </div>
             <form asp-action="Create">
                 <div class="modal-body">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="UsuarioId" class="control-label"></label>
-                        <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
-                    </div>
                     <div class="form-group">
                         <label asp-for="DataAjuste" class="control-label"></label>
                         <input asp-for="DataAjuste" class="form-control" />
@@ -51,19 +46,9 @@
                         <span asp-validation-for="HoraSegundaSaida" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Descricao" class="control-label"></label>
-                        <input asp-for="Descricao" class="form-control" />
-                        <span asp-validation-for="Descricao" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="SituacaoAjuste" class="control-label"></label>
-                        <input asp-for="SituacaoAjuste" class="form-control" />
-                        <span asp-validation-for="SituacaoAjuste" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Observacoes" class="control-label"></label>
-                        <input asp-for="Observacoes" class="form-control" />
-                        <span asp-validation-for="Observacoes" class="text-danger"></span>
+                        <label asp-for="Justificativa" class="control-label"></label>
+                        <textarea asp-for="Justificativa" class="form-control" />
+                        <span asp-validation-for="Justificativa" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer">

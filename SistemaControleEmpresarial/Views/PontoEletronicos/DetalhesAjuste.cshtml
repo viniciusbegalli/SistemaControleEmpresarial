@@ -1,0 +1,63 @@
+﻿@model SistemaControleEmpresarial.Models.AjustePontoEletronico
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Detalhes</h2>
+
+<a asp-action="AjustesPonto" asp-controller="PontoEletronicos" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+
+<hr />
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DataAjuste)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataAjuste)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HoraPrimeiraEntrada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HoraPrimeiraEntrada)
+        </dd>
+        <dt>
+            Primeira Sa&iacute;da
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HoraPrimeiraSaida)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HoraSegundaEntrada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HoraSegundaEntrada)
+        </dd>
+        <dt>
+            Segunda Sa&iacute;da
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HoraSegundaSaida)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Justificativa)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Justificativa)
+        </dd>
+        <dt>
+            Situa&ccedil;&atilde;o
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SituacaoAjuste)
+        </dd>
+        <dt>
+            Observa&ccedil;&otilde;es
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Observacoes)
+        </dd>
+    </dl>
+</div>

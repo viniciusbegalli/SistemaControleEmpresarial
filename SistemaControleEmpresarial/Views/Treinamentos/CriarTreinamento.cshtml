@@ -1,0 +1,299 @@
+﻿@model SistemaControleEmpresarial.Models.Treinamento
+
+@{
+    ViewData["Title"] = "CriarTreinamento";
+}
+
+@Html.Raw(TempData["msgCriacaoTreinamento"])
+
+<h2>Criar Treinamento</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <a asp-action="ListaTreinamentos" asp-controller="Treinamentos" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+                    <a href="#" onclick="SalvarTreinamento();" class="btn btn-primary"><i class="glyphicon glyphicon-education"></i> Criar</a>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Titulo" class="control-label"></label>
+                    <input asp-for="Titulo" id="treinaTitulo" class="form-control" />
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Descricao" class="control-label"></label>
+                    <textarea asp-for="Descricao" id="treinaDescricao" class="form-control"></textarea>
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataInicioTreinamento" class="control-label"></label>
+                    <input asp-for="DataInicioTreinamento" maxlength="10" id="treinaDataInicio" class="form-control" />
+                    <span asp-validation-for="DataInicioTreinamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataFimTreinamento" class="control-label"></label>
+                    <input asp-for="DataFimTreinamento" maxlength="10" id="treinaDataFim" class="form-control" />
+                    <span asp-validation-for="DataFimTreinamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HoraInicioTreinamento" class="control-label"></label>
+                    <input asp-for="HoraInicioTreinamento" id="treinaHoraInicio" class="form-control" />
+                    <span asp-validation-for="HoraInicioTreinamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HoraFimTreinamento" class="control-label"></label>
+                    <input asp-for="HoraFimTreinamento" id="treinaHoraFim" class="form-control" />
+                    <span asp-validation-for="HoraFimTreinamento" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-8" id="divInstrutores"></div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog   modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-user"></i> Busca Usu&aacute;rio</h4>
+            </div>
+            <div>
+                <!--<table class="table table-bordered">-->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        C&oacute;digo:
+                        <input type="text" class="form-control" name="filtroCodigoUsuario" id="filtroCodigoUsuario" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        Nome:
+                        <input type="text" class="form-control" maxlength="30" name="filtroNomeUsuario" id="filtroNomeUsuario" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <br />
+                        <button type="button" class="btn btn-info" id="btnPesquisarUsuario"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="tabelaDinamicaUsuario"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="submitModal2">Selecionar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        function CodigoInstrutorChange() {
+            var codigoInstr = $('#codigoInstrutor').val();
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/Treinamentos/GetDadosInstrutor",
+                data: { id: codigoInstr },
+                success: function (dados) {
+                    $(dados).each(function (i) {
+                        document.getElementById("nomeInstrutor").value = dados.Text
+                    });
+                }
+            });
+        }
+
+        function AdicionaInstrutorClick() {
+                var url = '@Url.Action("SetInstrutor", "Treinamentos")';
+
+                var codigoUsuarioInstrutor = $('#codigoInstrutor').val();
+                var nomeUsuarioInstrutor = $('#nomeInstrutor').val();
+                var resultadoFinal;
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: { id: codigoUsuarioInstrutor },
+                    success: function (dado) {
+                        if (dado != "") {
+                            alert(dado);
+                        }
+                        else {
+                            document.getElementById("codigoInstrutor").value = "";
+                            document.getElementById("nomeInstrutor").value = "";
+                            var identificador = "chk_" + codigoUsuarioInstrutor + "";
+                            var existeInstrutor = $(".cbInstrutores:checked").length;
+
+                            var element = document.getElementById(identificador);
+                            if (!(typeof (element) != 'undefined' && element != null)) {
+
+                                var instrutores = document.getElementById("cblInstrutores").value;
+                                instrutores += codigoUsuarioInstrutor + ";";
+                                document.getElementById("cblInstrutores").value = instrutores;
+                                resultadoFinal = "<input type='checkbox' name='checkBoxInstrutores' id='chk_" + codigoUsuarioInstrutor + "' value='" + codigoUsuarioInstrutor + "' />&nbsp&nbsp&nbsp" + nomeUsuarioInstrutor + "<br />";
+                                $("#cbInstrutores").append(resultadoFinal);
+                            }
+                            else {
+                                alert("Instrutor já adicionado");
+                            }
+                        }
+                    }
+                });
+            }
+
+        $(function () {
+            $('#submitModal2').click(function () {
+                var url = '@Url.Action("GetDadosInstrutor", "Treinamentos")';
+                var radiobuttons = document.getElementsByName("usuariosRadio");
+                var radioselecionado = document.querySelectorAll('input[name=usuariosRadio]:checked')[0].value;
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: { id: radioselecionado },
+                    success: function (dado) {
+                        document.getElementById("codigoInstrutor").value = radioselecionado;
+                        document.getElementById("nomeInstrutor").value = dado.Text;
+                    }
+                });
+            });
+        })
+
+        $(function () {
+            $("#btnPesquisarUsuario").click(function () {
+                var filtroCodigoUsuario = $('#filtroCodigoUsuario').val();
+                var filtroNomeUsuario = $('#filtroNomeUsuario').val();
+                var resultadoFinal;
+                $.ajax({
+                    dataType: "json",
+                    type: "GET",
+                    url: "/Feriados/ObterUsuariosLookup",
+                    data: { sCodigoUsuario: ((filtroCodigoUsuario != undefined) ? filtroCodigoUsuario : ""), sNomeUsuario: ((filtroNomeUsuario != undefined) ? filtroNomeUsuario : "") },
+                    success: function (dados) {
+                        resultadoFinal = "<table class='table'><thead><tr><th></th><th>C&oacute;digo</th><th>Nome Usu&aacute;rio</th></tr></thead><tbody>"
+                        $(dados).each(function (i) {
+                            resultadoFinal += "<tr><td><input type='radio' id='usuariosRadio_" + dados[i].CodigoExterno + "' name='usuariosRadio' value=" + dados[i].CodigoExterno + "></td>"
+                            resultadoFinal += "<td>" + dados[i].CodigoExterno + "</td>"
+                            resultadoFinal += "<td>" + dados[i].NomeUsuario + "</td></tr>"
+                        });
+                        resultadoFinal += "</tbody></table>"
+                        $("#tabelaDinamicaUsuario").html(resultadoFinal);
+                    }
+                });
+            });
+        })
+
+        function AddZero(num) {
+            return (num >= 0 && num < 10) ? "0" + num : num + "";
+        }
+
+        function SalvarTreinamento() {
+            var url = '@Url.Action("SalvaTreinamento", "Treinamentos")';
+            var codigoTreinamento = $('#idTreinamento').val();
+            var treinaTitulo = $('#treinaTitulo').val();
+            var treinaDescricao = $('#treinaDescricao').val();
+            var treinaDataInicio = $('#treinaDataInicio').val();
+            var treinaDataFim = $('#treinaDataFim').val();
+            var treinaHoraInicio = $('#treinaHoraInicio').val();
+            var treinaHoraFim = $('#treinaHoraFim').val();
+
+            var now = new Date();
+            var strDateTime = [[now.getFullYear(), AddZero(now.getMonth() + 1), AddZero(now.getDate())].join("-")];
+
+            if (treinaTitulo == "" || treinaDescricao == "" || treinaDataInicio == "" || treinaDataFim == "" || treinaHoraInicio == "" || treinaHoraFim == "") {
+                alert("Por favor preencha todos os campos!");
+                return false;
+            }
+
+            if (treinaDataInicio > treinaDataFim) {
+                alert("A data de início deve ser inferior à data de fim!");
+                return false;
+            }
+            
+            if (treinaDataInicio <= strDateTime) {
+                alert("O treinamento deve ser criado para uma data futura!");
+                return false;
+            }
+
+            if (treinaHoraInicio > treinaHoraFim) {
+                alert("A hora de início deve ser inferior à hora de fim!");
+                return false;
+            }
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    datatype: 'json',
+                    data: { CodigoTreinamento: (codigoTreinamento != "" && codigoTreinamento != undefined) ? codigoTreinamento : "", Titulo: treinaTitulo, Descricao: treinaDescricao, DataInicioTreinamento: treinaDataInicio, DataFimTreinamento: treinaDataFim, HoraInicioTreinamento: treinaHoraInicio, HoraFimTreinamento: treinaHoraFim },
+                    success: function (dado) {
+                        if (dado != "") {
+                            ListaInstrutores(dado);
+                            alert("Se Desejar, é possível adicionar instrutores para o treinamento!");
+                        }
+                    }
+                });
+        }
+
+        function ListaInstrutores(idTreinamento) {
+            var url = '@Url.Action("ListaInstrutores", "Treinamentos")';
+            $.ajax({
+                url: url,
+                type: 'GET',
+                datatype: 'html',
+                data: { id: idTreinamento },
+                success: function (dado) {
+                    var divInstrutores = $("#divInstrutores");
+                    divInstrutores.empty();
+                    divInstrutores.show();
+                    divInstrutores.html(dado);
+                }
+            });
+        }
+
+
+
+        function SalvarInstrutor() {
+            var url = '@Url.Action("SalvaInstrutor", "Treinamentos")';
+            var codigoInstrutor = $('#codigoInstrutor').val();
+            var codigoTreinamento = $('#idTreinamento').val();
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    datatype: 'json',
+                    data: { idInstrutor: codigoInstrutor, idTreinamento: codigoTreinamento },
+                    success: function (dado) {
+                        if (dado != "") {
+                            ListaInstrutores(dado);
+                            alert("Instrutor Adicionado Com Sucesso!");
+                        }
+                    }
+                });
+        }
+
+        function RemoveInstrutor(codigoTreinamento, codigoInstrutor) {
+            var url = '@Url.Action("RemoveInstrutor", "Treinamentos")';
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    datatype: 'json',
+                    data: { idInstrutor: codigoInstrutor, idTreinamento: codigoTreinamento },
+                    success: function (dado) {
+                        if (dado != "") {
+                            ListaInstrutores(dado);
+                            alert("Instrutor Removido Com Sucesso!");
+                        }
+                    }
+                });
+        }
+    </script>
+}

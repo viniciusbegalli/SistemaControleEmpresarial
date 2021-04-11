@@ -1,0 +1,72 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.VagaCandidato>
+
+@{
+    ViewData["Title"] = "ListaVagaCandidatos";
+}
+
+<h2>Candidatos Vaga</h2>
+
+<a asp-action="ListaVagas" asp-controller="Vagas" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <a asp-action="ExportarCandidatosExcel" asp-route-id="@ViewBag.CodigoVaga" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+}
+<hr />
+
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+    <div>
+        <p>
+            Nenhum candidato encontrado.
+        </p>
+    </div>
+    }
+    else
+    {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CodigoVaga)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeCandidato)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LinkedIn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Observacoes)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vaga.CodigoVaga) - @Html.DisplayFor(modelItem => item.Vaga.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeCandidato)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LinkedIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacoes)
+                </td>
+            </tr>
+                }
+        </tbody>
+    </table>
+    }
+}

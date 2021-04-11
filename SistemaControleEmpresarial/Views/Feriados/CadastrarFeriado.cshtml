@@ -1,0 +1,45 @@
+﻿@model SistemaControleEmpresarial.Models.Feriado
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Cadastrar Feriado</h2>
+
+<h4>Feriado</h4>
+@Html.Raw(TempData["msgCriacaoFeriado"])
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm())
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Criar Novo Feriado</h4>
+            </div>
+            <form asp-action="CadastrarFeriado">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    Data do Feriado
+                    <input asp-for="Data" class="form-control" />
+                    <span asp-validation-for="Data" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    Descri&ccedil;&atilde;o do Feriado
+                    <input asp-for="DescricaoFeriado" class="form-control" />
+                    <span asp-validation-for="DescricaoFeriado" class="text-danger"></span>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" value="Cancelar" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-floppy-remove"></i> Cancelar</button>
+                        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-calendar"></i> Criar</button>
+                    </div>
+                </div>
+            </form>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

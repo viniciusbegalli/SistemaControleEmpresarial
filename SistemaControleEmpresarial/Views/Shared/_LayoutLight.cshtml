@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SistemaControleEmpresarial</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<ApplicationUser> SignInManager
+    @inject UserManager<ApplicationUser> UserManager
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">In&iacute;cio</a>
+            </div>
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                <ul class="nav navbar-nav">
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente") || User.IsInRole("Supervisor"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a asp-area="" asp-controller="Admin" asp-action="ListaUsuarios">Usu&aacute;rios</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a asp-area="" asp-controller="Admin" asp-action="ListaPerfis">Perfil</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a asp-area="" asp-controller="Relatorios" asp-action="ListaRelatorios">Relatórios</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente") || User.IsInRole("Supervisor") || User.IsInRole("Analista"))
+                    {
+                        @if (User.IsInRole("Supervisor") || User.IsInRole("Analista"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a asp-area="" asp-controller="PontoEletronicos" asp-action="MeuPontoEletronico">Ponto</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Gerente"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a asp-area="" asp-controller="PontoEletronicos" asp-action="AjustesPendentes">Ajustes</a>
+                            </li>
+                        }
+                        <li class="nav-item dropdown">
+                            <a asp-area="" asp-controller="Feriados" asp-action="ListaFeriados">Feriados</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a asp-area="" asp-controller="Chamados" asp-action="ListaChamados">Chamados</a>
+                        </li>
+                    }
+                    <li class="nav-item dropdown">
+                        <a asp-area="" asp-controller="Treinamentos" asp-action="ListaTreinamentos">Treinamentos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a asp-area="" asp-controller="Vagas" asp-action="ListaVagas">Vagas</a>
+                    </li>
+                </ul>
+                }
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </nav>
+
+    <partial name="_CookieConsentPartial" />
+    <!--<partial name="../Account/Login" />-->
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+<!--    <script src="https://apis.google.com/js/platform.js" async defer></script>-->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

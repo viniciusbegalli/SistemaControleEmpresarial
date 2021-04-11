@@ -1,0 +1,74 @@
+﻿@model SistemaControleEmpresarial.Models.AjustePontoEletronico
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>AjustePontoEletronico</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CodigoAjuste" />
+            <div class="form-group">
+                <label asp-for="UsuarioId" class="control-label"></label>
+                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
+                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataAjuste" class="control-label"></label>
+                <input asp-for="DataAjuste" class="form-control" />
+                <span asp-validation-for="DataAjuste" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraPrimeiraEntrada" class="control-label"></label>
+                <input asp-for="HoraPrimeiraEntrada" class="form-control" />
+                <span asp-validation-for="HoraPrimeiraEntrada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraPrimeiraSaida" class="control-label"></label>
+                <input asp-for="HoraPrimeiraSaida" class="form-control" />
+                <span asp-validation-for="HoraPrimeiraSaida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraSegundaEntrada" class="control-label"></label>
+                <input asp-for="HoraSegundaEntrada" class="form-control" />
+                <span asp-validation-for="HoraSegundaEntrada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraSegundaSaida" class="control-label"></label>
+                <input asp-for="HoraSegundaSaida" class="form-control" />
+                <span asp-validation-for="HoraSegundaSaida" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Justificativa" class="control-label"></label>
+                <input asp-for="Justificativa" class="form-control" />
+                <span asp-validation-for="Justificativa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SituacaoAjuste" class="control-label"></label>
+                <input asp-for="SituacaoAjuste" class="form-control" />
+                <span asp-validation-for="SituacaoAjuste" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Observacoes" class="control-label"></label>
+                <input asp-for="Observacoes" class="form-control" />
+                <span asp-validation-for="Observacoes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

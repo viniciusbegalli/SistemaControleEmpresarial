@@ -1,0 +1,111 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.AjustePontoEletronico>
+
+@{
+    ViewData["Title"] = "AjustesPonto";
+}
+@Html.Raw(TempData["msgRegistroPonto"])
+
+<h2>Ajustes Ponto Pendentes</h2>
+<div>
+    @{
+        @if (User.IsInRole("Supervisor"))
+        {
+            <a asp-action="AjustesPonto" asp-controller="PontoEletronicos" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+        }
+    }
+    
+    @{
+        if (Model != null && Model.Count() > 0)
+        {
+        <a asp-action="ExportarExcelAjustesPendentes" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+        }
+    }
+</div>
+
+<hr />
+
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+    <div>
+        <p>
+            Nenhuma solicita&ccedil;&atilde;o de ajuste encontrada.
+        </p>
+    </div>
+    }
+    else
+    {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Usu&aacute;rio
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataAjuste)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HoraPrimeiraEntrada)
+                </th>
+                <th>
+                    Sa&iacute;da
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HoraSegundaEntrada)
+                </th>
+                <th>
+                    Sa&iacute;da
+                </th>
+                <th>
+                    Situa&ccedil;&atilde;o
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.CodigoExterno) - @Html.DisplayFor(modelItem => item.ApplicationUser.NomeUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataAjuste)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraPrimeiraEntrada)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraPrimeiraSaida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraSegundaEntrada)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraSegundaSaida)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SituacaoAjuste)
+                </td>
+                <td>
+                    <a asp-action="DetalhesAjustePendente" asp-route-id="@item.CodigoAjuste" class="btn btn-warning"><i class="glyphicon glyphicon-list-alt"></i> Detalhes</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+}
+<div id="modal" class="modal fade" role="dialog" />
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("#btnAjuste").click(function () {
+                $("#modal").load("SolicitarAjustePonto", function () {
+                    $("#modal").modal();
+                })
+            });
+        })
+    </script>
+}

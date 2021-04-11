@@ -13,7 +13,7 @@ namespace SistemaControleEmpresarial.Models
             Users = new List<string>();
         }
         public string Id { get; set; }
-        [Required(ErrorMessage = "O nome da role é obrigatório")]
+        [Required(ErrorMessage = "O nome do perfil é obrigatório")]
         public string RoleName { get; set; }
         public List<string> Users { get; set; }
     }

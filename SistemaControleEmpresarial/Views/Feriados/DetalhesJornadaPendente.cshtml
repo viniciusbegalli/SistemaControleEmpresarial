@@ -1,0 +1,73 @@
+﻿@model SistemaControleEmpresarial.Models.SolicitacaoJornada
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Detalhes</h2>
+
+<a asp-action="JornadasPendentes" asp-controller="Feriados" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+
+<hr />
+@if (@Model.SituacaoSolicitacao == Dominio.SituacaoSolicitacaoJornada.Pendente)
+{
+<form asp-action="AprovarReprovarJornada" onSubmit="return validarDados();">
+    <input type="hidden" id="id" name="id" value="@Model.CodigoSolicitacaoJornada" />
+    Observa&ccedil;&acirc;o:
+    <textarea id="observacao" name="observacao" maxlength="100" class="form-control"></textarea>
+    <br />
+    A&ccedil;&acirc;o:
+    <select name="situacao" id="situacao" class="form-control">
+        <option value="" class="form-control"></option>
+        <option value="Aprovar" class="form-control">Aprovar</option>
+        <option value="Reprovar" class="form-control">Reprovar</option>
+    </select>
+    <br />
+    <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-time"></i> Aprovar/Reprovar Solicita&ccedil;&acirc;o</button>
+</form>
+}
+<hr />
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            Solicitante
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.CodigoExterno) - @Html.DisplayFor(model => model.ApplicationUser.NomeUsuario)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataCriacao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataCriacao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NomeUsuarioJornada)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CodigoUsuarioJornada) - @Html.DisplayFor(model => model.NomeUsuarioJornada)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Justificativa)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Justificativa)
+        </dd>
+    </dl>
+</div>
+
+@section Scripts {
+    <script>
+        function validarDados() {
+            if (document.getElementById("situacao").value == "") {
+                alert("Por favor selecione uma ação!");
+                return false;
+            }
+            if (document.getElementById("observacao").value == "" && document.getElementById("situacao").value == "Reprovar") {
+                alert("Por favor informe no campo Observação, a razão da reprova!");
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

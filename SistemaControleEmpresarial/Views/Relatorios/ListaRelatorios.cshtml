@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "Feriados";
+}
+
+@Html.Raw(TempData["msgListaRelatorios"])
+<h2>Relat&oacute;rios</h2>
+
+<hr />
+<form asp-action="ListaRelatorios" onSubmit="return validarDados();">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            Relat&oacute;rio:
+            <select name="relatorios" id="relatorios" class="form-control" onchange="filtrosrelatorios();">
+                <option value="" class="form-control"></option>
+                <option value="AjustesPonto" class="form-control">Ajustes de Ponto</option>
+                <option value="Chamados" class="form-control">Chamados</option>
+                <option value="FeriadosVSJornadas" class="form-control">Feriados VS Jornadas</option>
+                <option value="Treinamentos" class="form-control">Treinamentos</option>
+                <option value="Usuarios" class="form-control">Usu&aacute;rios</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row" id="divMesInicio" style="visibility: hidden;">
+        <div class="form-group col-md-2">
+            M&ecirc;s In&iacute;cio:
+            <select name="mesInicio" id="mesInicio" class="form-control">
+                <option value="" class="form-control"></option>
+                <option value="1" class="form-control">Janeiro</option>
+                <option value="2" class="form-control">Fevereiro</option>
+                <option value="3" class="form-control">Mar&ccedil;o</option>
+                <option value="4" class="form-control">Abril</option>
+                <option value="5" class="form-control">Maio</option>
+                <option value="6" class="form-control">Junho</option>
+                <option value="7" class="form-control">Julho</option>
+                <option value="8" class="form-control">Agosto</option>
+                <option value="9" class="form-control">Setembro</option>
+                <option value="10" class="form-control">Outubro</option>
+                <option value="11" class="form-control">Novembro</option>
+                <option value="12" class="form-control">Dezembro</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row" id="divAnoInicio" style="visibility: hidden;">
+        <div class="form-group col-md-2">
+            Ano In&iacute;cio:
+            <input type="text" class="form-control" name="anoInicio" id="anoInicio" maxlength="4" onkeypress="return onlynumber();" />
+        </div>
+    </div>
+    <div class="form-row" id="divMesFim" style="visibility: hidden;">
+        <div class="form-group col-md-2">
+            M&ecirc;s Fim:
+            <select name="mesFim" id="mesFim" class="form-control">
+                <option value="" class="form-control"></option>
+                <option value="1" class="form-control">Janeiro</option>
+                <option value="2" class="form-control">Fevereiro</option>
+                <option value="3" class="form-control">Mar&ccedil;o</option>
+                <option value="4" class="form-control">Abril</option>
+                <option value="5" class="form-control">Maio</option>
+                <option value="6" class="form-control">Junho</option>
+                <option value="7" class="form-control">Julho</option>
+                <option value="8" class="form-control">Agosto</option>
+                <option value="9" class="form-control">Setembro</option>
+                <option value="10" class="form-control">Outubro</option>
+                <option value="11" class="form-control">Novembro</option>
+                <option value="12" class="form-control">Dezembro</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row" id="divAnoFim" style="visibility: hidden;">
+        <div class="form-group col-md-2">
+            Ano Fim:
+            <input type="text" class="form-control" maxlength="4" name="anoFim" id="anoFim" onkeypress="return onlynumber();" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <br />
+            <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> Visualizar</button>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts {
+<script>
+    function onlynumber(evt) {
+        var theEvent = evt || window.event;
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+        //var regex = /^[0-9.,]+$/;
+        var regex = /^[0-9.]+$/;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+
+    function filtrosrelatorios() {
+        if (document.getElementById("relatorios").value == "" || document.getElementById("relatorios").value == "Usuarios") {
+            document.getElementById("divMesInicio").style = "visibility: hidden;";
+            document.getElementById("divAnoInicio").style = "visibility: hidden;";
+            document.getElementById("divMesFim").style = "visibility: hidden;";
+            document.getElementById("divAnoFim").style = "visibility: hidden;";
+
+            document.getElementById("mesInicio").value = "";
+            document.getElementById("anoInicio").value = "";
+            document.getElementById("mesFim").value = "";
+            document.getElementById("anoFim").value = "";
+        }
+        else {
+            document.getElementById("divMesInicio").style = "visibility: visible;";
+            document.getElementById("divAnoInicio").style = "visibility: visible;";
+            document.getElementById("divMesFim").style = "visibility: visible;";
+            document.getElementById("divAnoFim").style = "visibility: visible;";
+        }
+    }
+
+    function validarDados(){
+        if (document.getElementById("relatorios").value == "Usuarios") {
+            return true;
+        }
+        if (document.getElementById("relatorios").value == "")
+        {
+        alert( "Por favor selecione um formulário!" );
+        return false;
+        }
+        if (document.getElementById("mesInicio").value == "") {
+            alert("Por favor selecione um mês de início!");
+            return false;
+        }
+        if (document.getElementById("anoInicio").value == "") {
+            alert("Por favor informe um ano de início!");
+            return false;
+        }
+        if (document.getElementById("mesFim").value == "") {
+            alert("Por favor selecione um mês de fim!");
+            return false;
+        }
+        if (document.getElementById("anoFim").value == "") {
+            alert("Por favor informe um ano de fim!");
+            return false;
+        }
+        if (document.getElementById("anoInicio").value > document.getElementById("anoFim").value) {
+            alert("Ano Fim não pode ser menor que Ano Início!");
+            return false;
+        }
+        if ((document.getElementById("anoInicio").value == document.getElementById("anoFim").value) && document.getElementById("mesInicio").value > document.getElementById("mesFim").value) {
+            alert("Intervalo Inválido!");
+            return false;
+        }
+        return true;
+    }
+</script>
+}

@@ -1,0 +1,215 @@
+﻿@model SistemaControleEmpresarial.Models.Treinamento
+
+@{
+    ViewData["Title"] = "CriarTreinamento";
+}
+
+@Html.Raw(TempData["msgCriacaoTreinamento"])
+
+<h2>CriarTreinamento</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CriarTreinamento">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <a asp-action="ListaTreinamento" asp-controller="Treinamentos" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-education"></i> Criar</button>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Titulo" class="control-label"></label>
+                    <input asp-for="Titulo" class="form-control" />
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Descricao" class="control-label"></label>
+                    <textarea asp-for="Descricao" class="form-control"></textarea>
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataInicioTreinamento" class="control-label"></label>
+                    <input asp-for="DataInicioTreinamento" class="form-control" />
+                    <span asp-validation-for="DataInicioTreinamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataFimTreinamento" class="control-label"></label>
+                    <input asp-for="DataFimTreinamento" class="form-control" />
+                    <span asp-validation-for="DataFimTreinamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HoraInicioTreinamento" class="control-label"></label>
+                    <input asp-for="HoraInicioTreinamento" class="form-control" />
+                    <span asp-validation-for="HoraInicioTreinamento" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HoraFimTreinamento" class="control-label"></label>
+                    <input asp-for="HoraFimTreinamento" class="form-control" />
+                    <span asp-validation-for="HoraFimTreinamento" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <h3>INSTRUTOR(ES)</h3>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="text" id="codigoInstrutor" placeholder="Código Instrutor" name="codigoInstrutor" class="form-control" />
+                    <input type="text" id="nomeInstrutor" readonly="readonly" placeholder="Instrutor" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <button type="button" title="Clique para abrir o modal de busca por usuários" data-toggle="modal" data-target="#myModal" id="showPop2" value="Cancelar" class="btn btn-info" data-dismiss="modal"><i class="glyphicon glyphicon-search"></i></button>
+                    <button type="button" title="Clique para adicionar o instrutor" id="adicionaInstrutor" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Adicionar</button>
+                </div>
+                <div class="form-group" id="cbInstrutores">
+                    <input type="hidden" name="cblInstrutores" id="cblInstrutores" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog   modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="glyphicon glyphicon-user"></i> Busca Usu&aacute;rio</h4>
+            </div>
+            <div>
+                <!--<table class="table table-bordered">-->
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        C&oacute;digo:
+                        <input type="text" class="form-control" name="filtroCodigoUsuario" id="filtroCodigoUsuario" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        Nome:
+                        <input type="text" class="form-control" maxlength="30" name="filtroNomeUsuario" id="filtroNomeUsuario" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <br />
+                        <button type="button" class="btn btn-info" id="btnPesquisarUsuario"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="tabelaDinamicaUsuario"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="submitModal2">Selecionar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $('#codigoInstrutor').change(function () {
+            var feriado = $(this).val();
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "/Treinamentos/GetDadosInstrutor",
+                data: { id: feriado },
+                success: function (dados) {
+                    $(dados).each(function (i) {
+                        document.getElementById("nomeInstrutor").value = dados.Text
+                    });
+                }
+            });
+        });
+
+        $(function () {
+            $('#adicionaInstrutor').click(function () {
+                var url = '@Url.Action("SetInstrutor", "Treinamentos")';
+
+                var codigoUsuarioInstrutor = $('#codigoInstrutor').val();
+                var nomeUsuarioInstrutor = $('#nomeInstrutor').val();
+                var resultadoFinal;
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: { id: codigoUsuarioInstrutor },
+                    success: function (dado) {
+                        if (dado != "") {
+                            alert(dado);
+                        }
+                        else {
+                            document.getElementById("codigoInstrutor").value = "";
+                            document.getElementById("nomeInstrutor").value = "";
+                            var identificador = "chk_" + codigoUsuarioInstrutor + "";
+                            var existeInstrutor = $(".cbInstrutores:checked").length;
+
+                            var element = document.getElementById(identificador);
+                            if (!(typeof (element) != 'undefined' && element != null)) {
+
+                                var instrutores = document.getElementById("cblInstrutores").value;
+                                instrutores += codigoUsuarioInstrutor + ";";
+                                document.getElementById("cblInstrutores").value = instrutores;
+                                resultadoFinal = "<input type='checkbox' name='checkBoxInstrutores' id='chk_" + codigoUsuarioInstrutor + "' value='" + codigoUsuarioInstrutor + "' />&nbsp&nbsp&nbsp" + nomeUsuarioInstrutor + "<br />";
+                                $("#cbInstrutores").append(resultadoFinal);
+                            }
+                            else {
+                                alert("Instrutor já adicionado");
+                            }
+                        }
+                    }
+                });
+            });
+        })
+
+        $(function () {
+            $('#submitModal2').click(function () {
+                var url = '@Url.Action("GetDadosInstrutor", "Treinamentos")';
+                var radiobuttons = document.getElementsByName("usuariosRadio");
+                var radioselecionado = document.querySelectorAll('input[name=usuariosRadio]:checked')[0].value;
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: { id: radioselecionado },
+                    success: function (dado) {
+                        document.getElementById("codigoInstrutor").value = radioselecionado;
+                        document.getElementById("nomeInstrutor").value = dado.Text;
+                    }
+                });
+            });
+        })
+
+        $(function () {
+            $("#btnPesquisarUsuario").click(function () {
+                var filtroCodigoUsuario = $('#filtroCodigoUsuario').val();
+                var filtroNomeUsuario = $('#filtroNomeUsuario').val();
+                var resultadoFinal;
+                $.ajax({
+                    dataType: "json",
+                    type: "GET",
+                    url: "/Feriados/ObterUsuariosLookup",
+                    data: { sCodigoUsuario: ((filtroCodigoUsuario != undefined) ? filtroCodigoUsuario : ""), sNomeUsuario: ((filtroNomeUsuario != undefined) ? filtroNomeUsuario : "") },
+                    success: function (dados) {
+                        resultadoFinal = "<table class='table'><thead><tr><th></th><th>C&oacute;digo</th><th>Nome Usu&aacute;rio</th></tr></thead><tbody>"
+                        $(dados).each(function (i) {
+                            resultadoFinal += "<tr><td><input type='radio' id='usuariosRadio_" + dados[i].CodigoExterno + "' name='usuariosRadio' value=" + dados[i].CodigoExterno + "></td>"
+                            resultadoFinal += "<td>" + dados[i].CodigoExterno + "</td>"
+                            resultadoFinal += "<td>" + dados[i].NomeUsuario + "</td></tr>"
+                        });
+                        resultadoFinal += "</tbody></table>"
+                        $("#tabelaDinamicaUsuario").html(resultadoFinal);
+                    }
+                });
+            });
+        })
+
+    </script>
+}

@@ -9,16 +9,8 @@
     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Ol&aacute; @UserManager.GetUserName(User)!</a>
+                <a href="#">Ol&aacute; @UserManager.GetUserName(User)!</a>
             </li>
-            @if (User.IsInRole("Administrador"))
-            {
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Admin" asp-action="ListRoles">
-                        Gerenciar Roles
-                    </a>
-                </li>
-            }
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link"><i class="glyphicon glyphicon-log-out"></i> Sair</button>
             </li>

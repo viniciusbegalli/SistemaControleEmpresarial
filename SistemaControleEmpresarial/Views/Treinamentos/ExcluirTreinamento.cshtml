@@ -1,0 +1,98 @@
+﻿@model SistemaControleEmpresarial.Models.Treinamento
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Excluir</h2>
+
+<h3>Tem certeza que deseja excluir este treinamento?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataInicioTreinamento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataInicioTreinamento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataFimTreinamento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataFimTreinamento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HoraInicioTreinamento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HoraInicioTreinamento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HoraFimTreinamento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HoraFimTreinamento)
+        </dd>
+        <dt>
+            Criador
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.CodigoExterno) - @Html.DisplayFor(model => model.ApplicationUser.NomeUsuario)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataCriacao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataCriacao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SituacaoTreinamento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SituacaoTreinamento)
+        </dd>
+    </dl>
+    <hr />
+    <h3>INSTRUTORES</h3>
+    <hr />
+    @if (Model.InstrutoresTreinamento != null && Model.InstrutoresTreinamento.Count > 0)
+    {
+        foreach (var item in Model.InstrutoresTreinamento)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    Instrutor
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.CodigoExterno) - @Html.DisplayFor(modelItem => item.NomeInstrutor)
+                </dd>
+            </dl>
+        }
+    }
+            <form asp-action="ExcluirTreinamento">
+                <input type="hidden" asp-for="CodigoTreinamento" />
+                <a asp-action="ListaTreinamentos" asp-controller="Treinamentos" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+                @if (@Model.SituacaoTreinamento == Dominio.SituacaoTreinamento.Ativo)
+                {
+                    <a asp-action="CancelarTreinamento" asp-controller="Treinamentos" asp-route-id="@Model.CodigoTreinamento" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancelar Treinamento</a>
+                }
+                else
+                {
+                    <a asp-action="ReativarTreinamento" asp-controller="Treinamentos" asp-route-id="@Model.CodigoTreinamento" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Reativar Treinamento</a>
+                }
+                <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Confirmar Exclus&atilde;o</button>
+            </form>
+</div>

@@ -1,0 +1,57 @@
+﻿<title>
+    @ViewData["Title"] - Grafico
+</title>
+<br />
+<a asp-action="ListaRelatorios" asp-controller="Relatorios" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+<hr />
+<br />
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<script type="text/javascript">
+
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(CarregaDados);
+    function CarregaDados() {
+        $.ajax({
+            url: '@Url.Action("UsuariosGrafico","Relatorios")',
+            dataType: "json",
+            type: "GET",
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                toastr.error(err.message);
+            },
+            success: function(data) {
+                GraficoUsuarios(data);
+                return false;
+            }
+        });
+        return false;
+    }
+    function GraficoUsuarios(data) {
+        var dataArray = [
+            ['Perfil', 'Total']
+        ];
+        $.each(data, function(i, item) {
+            dataArray.push([item.perfil, item.total]);
+        });
+        var data = google.visualization.arrayToDataTable(dataArray);
+        var options = {
+            title: 'Perfil Usuários',
+            chartArea: {
+                width: '50%'
+            },
+            colors: ['#b0120a', '#6A5ACD', '#00FA9A', '#FF8C00', '#ffab91'],
+            hAxis: {
+                title: 'Perfil',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Perfil Usuários'
+            }
+        };
+        
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        return false;
+    }
+</script> 

@@ -1,0 +1,47 @@
+﻿@model SistemaControleEmpresarial.Models.VagaCandidato
+
+@{
+    ViewData["Title"] = "CandidatarVaga";
+}
+
+<h2>Candidatar Vaga</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CandidatarVaga">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CodigoVaga" class="control-label"></label>
+                <input asp-for="CodigoVaga" readonly="readonly" class="form-control" />
+                <span asp-validation-for="CodigoVaga" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NomeCandidato" class="control-label"></label>
+                <input asp-for="NomeCandidato" class="form-control" />
+                <span asp-validation-for="NomeCandidato" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LinkedIn" class="control-label"></label>
+                <input asp-for="LinkedIn" class="form-control" />
+                <span asp-validation-for="LinkedIn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Observacoes" class="control-label"></label>
+                <textarea asp-for="Observacoes" class="form-control"></textarea>
+                <span asp-validation-for="Observacoes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a asp-action="ListaVagas" asp-controller="Vagas" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-star"></i> Candidatar</button>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

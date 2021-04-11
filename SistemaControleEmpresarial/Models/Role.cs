@@ -8,8 +8,8 @@ namespace SistemaControleEmpresarial.Models
 {
     public class Role
     {
-        [Required]
         [Display(Name = "Role")]
+        [Required(ErrorMessage = "O nome do perfil é obrigatório")]
         public string RoleName { get; set; }
     }
 }

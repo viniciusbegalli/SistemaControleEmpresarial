@@ -1,0 +1,121 @@
+﻿
+@model IEnumerable<SistemaControleEmpresarial.Models.SolicitacaoJornada>
+
+@{
+    ViewData["Title"] = "Jornadas";
+}
+
+@Html.Raw(TempData["msgCriacaoJornada"])
+@Html.Raw(TempData["msgExclusaoJornada"])
+@Html.Raw(TempData["msgJornadaPendente"])
+<h2>Jornadas</h2>
+
+<a asp-action="ListaFeriados" asp-controller="Feriados" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+<a asp-action="SolicitarJornada" class="btn btn-primary"><i class="glyphicon glyphicon-flag"></i> Solicitar Jornada</a>
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        <a asp-action="ExportarExcelJornadas" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+    }
+}
+@if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+{
+    <a asp-action="JornadasPendentes" asp-controller="Feriados" class="btn btn-primary"><i class="glyphicon glyphicon-flag"></i> Aprovar/Reprovar Jornadas</a>
+}
+<hr />
+
+<form asp-action="ListaJornadas">
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            C&oacute;digo Feriado
+            <input type="text" class="form-control" name="codigoFeriado" id="codigoFeriado" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            C&oacute;digo Usu&aacute;rio
+            <input type="text" class="form-control" name="codigoUsuario" id="codigoUsuario" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <br />
+            <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+        </div>
+    </div>
+</form>
+
+<br /><br /><br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Feriado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeUsuarioJornada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCriacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Justificativa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SituacaoSolicitacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observacoes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Feriado.DescricaoFeriado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodigoUsuarioJornada) - @Html.DisplayFor(modelItem => item.NomeUsuarioJornada)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.CodigoExterno) - @Html.DisplayFor(modelItem => item.ApplicationUser.NomeUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataCriacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Justificativa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SituacaoSolicitacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacoes)
+                </td>
+                <td>
+                    <a asp-action="ExcluirJornada" asp-controller="Feriados" asp-route-id="@item.CodigoSolicitacaoJornada" class="btn btn-danger" value="@item.CodigoSolicitacaoJornada"><i class="glyphicon glyphicon-trash"></i> Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="modal" class="modal fade" role="dialog" />
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("#btnCadastro").click(function () {
+                $("#modal").load("CadastrarFeriado", function () {
+                    $("#modal").modal();
+                })
+            });
+        })
+    </script>
+}

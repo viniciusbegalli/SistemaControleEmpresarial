@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.TreinamentoInstrutor>
+
+
+    <div class="form-group">
+    <h3>INSTRUTOR(ES)</h3>
+</div>
+<br />
+<div class="form-group">
+    <input type="text" id="codigoInstrutor" onchange="CodigoInstrutorChange();" placeholder="Código Instrutor" name="codigoInstrutor" class="form-control" />
+    <input type="text" id="nomeInstrutor" readonly="readonly" placeholder="Instrutor" class="form-control" />
+</div>
+<div class="form-group">
+    <button type="button" title="Clique para abrir o modal de busca por usuários" data-toggle="modal" data-target="#myModal" id="showPop2" value="Cancelar" class="btn btn-info" data-dismiss="modal"><i class="glyphicon glyphicon-search"></i></button>
+    
+    <a href="#" onclick="SalvarInstrutor();" title="Clique para adicionar o instrutor" id="adicionaInstrutor" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Adicionar</a>
+</div>
+<div class="form-group" id="cbInstrutores">
+    <input type="hidden" name="cblInstrutores" id="cblInstrutores" />
+</div>
+
+<input type="hidden" id="idTreinamento" value="@ViewBag.Treinamento" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                C&oacute;digo
+            </th>
+            <th>
+                Nome do Instrutor
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="#" onclick="RemoveInstrutor(@item.CodigoTreinamento, @item.CodigoExterno);" title="Clique para remover o instrutor" id="removeInstrutor" class="btn btn-danger"><i class="glyphicon glyphicon-minus"></i></a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instrutor.CodigoExterno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instrutor.NomeUsuario)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

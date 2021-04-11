@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewBag.Title = "Lista Perfis";
+}
+@Html.Raw(TempData["msgRetornosPerfil"])
+
+<h2>Perfis de Acesso</h2>
+@if (Model.Any())
+{
+    @if (User.IsInRole("Administrador"))
+    {
+        <a class="btn btn-primary mb-3" style="width:auto" asp-action="CriarPerfil"
+           asp-controller="Admin"><i class="glyphicon glyphicon-wrench"></i>Novo Perfil</a>
+    }
+
+    <a asp-action="ExportarExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+    <br /><br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Perfil
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>
+                        @role.Name
+                    </td>
+                    <td style='text-align:right;vertical-align:middle'>
+                        <form asp-action="ExcluirPerfil" asp-route-id="@role.Id" method="post">
+                            <a asp-action="EditarPerfil" asp-controler="Admin"
+                               asp-route-id="@role.Id" class="btn btn-success btn-success"><i class="glyphicon glyphicon-edit"></i>Editar Usu&aacute;rios Perfil</a>
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <span id="confirmaDeleteSpan_@role.Id" style="display:none">
+                                    <span>Confirma a exclusão desta role ?</span>
+                                    <button type="submit" class="btn btn-danger">Sim</button>
+                                    <a href="#" class="btn btn-primary"
+                                       onclick="confirmaDelete('@role.Id', false)">Não</a>
+                                </span>
+                                <span id="deleteSpan_@role.Id">
+                                    <a href="#" class="btn btn-danger"
+                                       onclick="confirmaDelete('@role.Id', true)"><i class="glyphicon glyphicon-trash"></i>Excluir</a>
+                                </span>
+                            }
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+    @section Scripts {
+        <script src="~/js/site.js"></script>
+    }

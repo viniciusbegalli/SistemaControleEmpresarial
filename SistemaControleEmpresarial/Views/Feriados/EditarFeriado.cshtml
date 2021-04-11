@@ -1,0 +1,35 @@
+﻿@model SistemaControleEmpresarial.Models.Feriado
+
+@{
+    ViewData["Title"] = "EditarFeriado";
+}
+
+<h2>Editar Feriado</h2>
+@Html.Raw(TempData["msgCriacaoFeriado"])
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditarFeriado">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CodigoFeriado" />
+            <div class="form-group">
+                Data do Feriado
+                <input asp-for="Data" readonly="readonly" class="form-control" />
+                <span asp-validation-for="Data" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Descri&ccedil;&atilde;o do Feriado
+                <input asp-for="DescricaoFeriado" class="form-control" />
+                <span asp-validation-for="DescricaoFeriado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a asp-action="ListaFeriados" asp-controller="Feriados" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/site.js"></script>
+}

@@ -1,0 +1,21 @@
+﻿@model Role
+@{
+    ViewBag.Title = "Cria Novo Perfil";
+}
+<h3>Criar Perfil</h3>
+<form asp-action="CriarPerfil" method="post" class="mt-3">
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <input asp-for="RoleName" class="form-control" placeholder="Perfil">
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <a asp-action="ListaPerfis" asp-controller="Admin" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+            <button style="width:auto" type="submit" class="btn btn-primary">
+                <i class="glyphicon glyphicon-wrench"></i> Criar Novo Perfil
+            </button>
+        </div>
+    </div>
+</form>

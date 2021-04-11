@@ -1,0 +1,86 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.Chamado>
+
+@{
+    ViewData["Title"] = "ListaChamados";
+}
+@Html.Raw(TempData["msgCriacaoChamado"])
+<h2>Meus Chamados</h2>
+
+<a asp-action="CriarChamado" class="btn btn-primary"><i class="glyphicon glyphicon-tag"></i> Novo Chamado</a>
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        <a asp-action="ExportarExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+    }
+}
+<a asp-action="FilaChamados" class="btn btn-info"><i class="glyphicon glyphicon-tags"></i> Fila</a>
+<hr />
+
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+        <div>
+            <p>
+                Nenhum chamado encontrado.
+            </p>
+        </div>
+    }
+    else
+    {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CodigoChamado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataCriacao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Titulo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SituacaoChamado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fila)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Prioridade)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodigoChamado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataCriacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Titulo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SituacaoChamado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fila)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Prioridade)
+                        </td>
+                        <td>
+                            <a asp-action="DetalhesChamado" asp-route-id="@item.CodigoChamado" class="btn btn-warning"><i class="glyphicon glyphicon-list-alt"></i> Detalhes</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+}

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.Feriado>
+
+@{
+    ViewData["Title"] = "Feriados";
+}
+
+@Html.Raw(TempData["msgCriacaoFeriado"])
+<h2>Feriados</h2>
+
+<hr />
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm())
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Criar Novo Feriado</h4>
+            </div>
+            <form asp-action="ObterFeriadoLookup">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        De:
+                        <input type="date" class="form-control" max="9999-12-31" name="dataFeriadoInicio" id="dataFeriado" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        Até:
+                        <input type="date" class="form-control" max="9999-12-31" name="dataFeriadoFim" id="dataFeriado" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        Descri&ccedil;&atilde;o do Feriado:
+                        <input type="text" class="form-control" maxlength="30" name="descricaoFeriado" id="descricaoFeriado" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <br />
+                        <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                    </div>
+                </div>
+            </form>
+
+            <br /><br /><br />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Data)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DescricaoFeriado)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="EditarFeriado" asp-controller="Feriados" asp-route-id="@item.CodigoFeriado" class="btn btn-success btn-success"><i class="glyphicon glyphicon-edit"></i> Selecionar</a>
+                                <button type="button" id="idTestador" value="Cancelar" class="btn btn-danger" data-dismiss="modal">teste</button>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Data)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DescricaoFeriado)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="button" value="Cancelar" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Fechar</button>
+                </div>
+            </div>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

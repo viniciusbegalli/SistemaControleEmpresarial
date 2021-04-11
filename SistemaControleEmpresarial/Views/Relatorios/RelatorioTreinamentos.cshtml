@@ -1,0 +1,58 @@
+﻿<title>
+    @ViewData["Title"] - Grafico
+
+    @Html.Raw(TempData["msgErroRelatorios"])
+</title>
+<br />
+<a asp-action="ListaRelatorios" asp-controller="Relatorios" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+<hr />
+<br />
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
+<script type="text/javascript">
+
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(CarregaDados);
+    function CarregaDados() {
+        $.ajax({
+            url: '@Url.Action("TreinamentosGrafico","Relatorios")',
+            dataType: "json",
+            type: "GET",
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                toastr.error(err.message);
+            },
+            success: function(data) {
+                GraficoTreinamentos(data);
+                return false;
+            }
+        });
+        return false;
+    }
+    function GraficoTreinamentos(data) {
+        var dataArray = [
+            ['AnoMes', 'Total']
+        ];
+        $.each(data, function(i, item) {
+            dataArray.push([item.anoMes, item.total]);
+        });
+        var data = google.visualization.arrayToDataTable(dataArray);
+        var options = {
+            title: 'Treinamentos AnoMes',
+            chartArea: {
+                width: '50%'
+            },
+            colors: ['#ffab91'],
+            hAxis: {
+                title: 'AnoMes',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Treinamentos'
+            }
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        return false;
+    }
+</script> 

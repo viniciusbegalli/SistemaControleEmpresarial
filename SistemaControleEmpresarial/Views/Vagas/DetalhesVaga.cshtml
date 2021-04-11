@@ -1,0 +1,22 @@
+﻿@model SistemaControleEmpresarial.Models.Vaga
+
+@{
+    ViewData["Title"] = "DetalhesVaga";
+}
+
+<h2>Detalhes da Vaga</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Descri&ccedil;&atilde;o
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="ListaVagas" asp-controller="Vagas" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+</div>

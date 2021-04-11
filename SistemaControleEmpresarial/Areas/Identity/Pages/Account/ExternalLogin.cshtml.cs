@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using SistemaControleEmpresarial.Data;
 using SistemaControleEmpresarial.Models;
 
 namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
@@ -19,15 +20,18 @@ namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly ApplicationDbContext _context;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
@@ -115,7 +119,13 @@ namespace SistemaControleEmpresarial.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var usuariosCadastrados = from p in _context.Users
+                                          select p;
+
+                int qtdeUsuarios = usuariosCadastrados.Count();
+                qtdeUsuarios = qtdeUsuarios + 1;
+
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, CodigoExterno = qtdeUsuarios };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

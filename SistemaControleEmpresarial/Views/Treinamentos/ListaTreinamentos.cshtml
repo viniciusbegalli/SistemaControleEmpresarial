@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.Treinamento>
+
+@{
+    ViewData["Title"] = "ListaTreinamentos";
+}
+@Html.Raw(TempData["msgListaTreinamentos"])
+<h2>Treinamentos</h2>
+
+@if (User.IsInRole("Gerente") || User.IsInRole("Administrador"))
+{
+    <a asp-action="CriarTreinamento" class="btn btn-primary"><i class="glyphicon glyphicon-education"></i> Criar Treinamento</a>
+    if (Model != null && Model.Count() > 0)
+    {
+        <a asp-action="ExportarExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+    }
+}
+<br /><hr />
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+        <div>
+            <p>
+                Nenhum treinamento encontrado.
+            </p>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CodigoTreinamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Titulo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataInicioTreinamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataFimTreinamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HoraInicioTreinamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HoraFimTreinamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SituacaoTreinamento)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodigoTreinamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Titulo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataInicioTreinamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataFimTreinamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraInicioTreinamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HoraFimTreinamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SituacaoTreinamento)
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Gerente") || User.IsInRole("Administrador"))
+                            {
+                                <a asp-action="EditarTreinamento" asp-controller="Treinamentos" asp-route-id="@item.CodigoTreinamento" class="btn btn-success btn-success"><i class="glyphicon glyphicon-edit"></i> Editar</a>
+                                <a asp-action="ExcluirTreinamento" asp-controller="Treinamentos" asp-route-id="@item.CodigoTreinamento" class="btn btn-danger" value="@item.CodigoTreinamento"><i class="glyphicon glyphicon-trash"></i> Excluir</a>
+                            }
+                            <a asp-action="DetalhesTreinamento" asp-route-id="@item.CodigoTreinamento" class="btn btn-warning"><i class="glyphicon glyphicon-list-alt"></i> Detalhes</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

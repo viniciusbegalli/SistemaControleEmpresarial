@@ -1,0 +1,55 @@
+﻿@model SistemaControleEmpresarial.Models.Chamado
+
+@{
+    ViewData["Title"] = "CriarChamado";
+}
+
+<h2>Abrir Chamado</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CriarChamado">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <textarea asp-for="Descricao" class="form-control"></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prioridade" class="control-label"></label>
+                <select asp-for="Prioridade" class="form-control">
+                    <option value="" class="form-control"></option>
+                    <option value="Baixa" class="form-control">Baixa</option>
+                    <option value="Media" class="form-control">M&eacute;dia</option>
+                    <option value="Alta" class="form-control">Alta</option>
+                </select>
+                <span asp-validation-for="Prioridade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fila" class="control-label"></label>
+                <select asp-for="Fila" class="form-control">
+                    <option value="" class="form-control"></option>
+                    <option value="Analista" class="form-control">Analista</option>
+                    <option value="Supervisor" class="form-control">Supervisor</option>
+                    <option value="Gerente" class="form-control">Gerente</option>
+                    <option value="Administrador" class="form-control">Administrador</option>
+                </select>
+                <span asp-validation-for="Fila" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a asp-action="ListaChamados" asp-controller="Chamados" class="btn btn-warning"><i class="glyphicon glyphicon-step-backward"></i> Voltar</a>
+                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-tag"></i> Abrir</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

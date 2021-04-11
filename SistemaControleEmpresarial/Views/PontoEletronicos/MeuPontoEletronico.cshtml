@@ -14,7 +14,7 @@
             <a asp-action="ExportarExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
         }
     }
-    <button type="button" id="btnAjuste" class="btn btn-info"><i class="glyphicon glyphicon-erase"></i> Solicitar Ajuste</button>
+    <a asp-action="AjustesPonto" class="btn btn-info"><i class="glyphicon glyphicon-time"></i> Ajustes</a>
 </form>
 
 @Html.Raw(TempData["msgRegistroPonto"])
@@ -40,13 +40,13 @@
                         @Html.DisplayNameFor(model => model.DataHoraPrimeiraEntrada)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.DataHoraPrimeiraSaida)
+                        Primeira Sa&iacute;da
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.DataHoraSegundaEntrada)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.DataHoraSegundaSaida)
+                        Segunda Sa&iacute;da
                     </th>
                     <th></th>
                 </tr>
@@ -82,7 +82,7 @@
     <script>
         $(function () {
             $("#btnAjuste").click(function () {
-                $("#modal").load("../AjustePontoEletronicos/SolicitarAjustePonto", function () {
+                $("#modal").load("SolicitarAjustePonto", function () {
                     $("#modal").modal();
                 })
             });

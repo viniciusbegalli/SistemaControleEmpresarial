@@ -1,0 +1,120 @@
+﻿@model SistemaControleEmpresarial.Models.Chamado
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "DetalhesChamado";
+}
+
+@Html.Raw(TempData["msgCriacaoChamado"])
+
+<h2>Detalhes</h2>
+<div>
+    <button type="button" value="Voltar" class="btn btn-warning" data-dismiss="modal" onclick="voltarPagina()"><i class="glyphicon glyphicon-step-backward"></i> Voltar</button>
+    @if (@Model.UserId == @UserManager.GetUserId(User))
+    {
+        @if (@Model.SituacaoChamado == Dominio.SituacaoChamado.Aberto)
+        {
+            <a asp-action="FecharChamado" asp-controller="Chamados" asp-route-id="@Model.CodigoChamado" class="btn btn-danger"><i class="glyphicon glyphicon-folder-close"></i> Fechar Chamado</a>
+        }
+        else
+        {
+            <a asp-action="ReabrirChamado" asp-controller="Chamados" asp-route-id="@Model.CodigoChamado" class="btn btn-success"><i class="glyphicon glyphicon-folder-open"></i> Reabrir Chamado</a>
+        }
+    }
+</div>
+
+<hr />
+@if (@Model.SituacaoChamado == Dominio.SituacaoChamado.Aberto)
+{
+    <form asp-action="AdicionarNotaChamado">
+        <input type="hidden" id="id" name="id" value="@Model.CodigoChamado" />
+        <textarea id="notaChamado" name="notaChamado" maxlength="100" class="form-control"></textarea>
+        <br />
+        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Adicionar Nota</button>
+    </form>
+}
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CodigoChamado)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CodigoChamado)
+        </dd>
+        <dt>
+            Usu&aacute;rio
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.CodigoExterno) - @Html.DisplayFor(model => model.ApplicationUser.NomeUsuario)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataCriacao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataCriacao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SituacaoChamado)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SituacaoChamado)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Fila)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fila)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Prioridade)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Prioridade)
+        </dd>
+    </dl>
+    <hr />
+    <h3>NOTAS</h3>
+    <hr />
+    @if (Model.Notas != null && Model.Notas.Count > 0)
+    {
+        foreach (var item in Model.Notas)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    Usu&aacute;rio
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.CodigoExterno) - @Html.DisplayFor(modelItem => item.NomeUsuarioNota)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(modelItem => item.DataNota)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.DataNota)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(modelItem => item.DescricaoNota)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => item.DescricaoNota)
+                </dd>
+            </dl>
+        }
+    }
+</div>

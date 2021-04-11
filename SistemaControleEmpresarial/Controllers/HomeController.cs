@@ -26,6 +26,7 @@ namespace SistemaControleEmpresarial.Controllers
             {
                 string teste = userManager.GetUserName(User);
             }
+            
             return View();
         }
 

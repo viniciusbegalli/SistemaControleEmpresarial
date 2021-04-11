@@ -1,0 +1,131 @@
+﻿@model IEnumerable<SistemaControleEmpresarial.Models.Feriado>
+
+@{
+    ViewData["Title"] = "Feriados";
+}
+
+@Html.Raw(TempData["msgCriacaoFeriado"])
+<h2>Feriados</h2>
+@if (User.IsInRole("Gerente") || User.IsInRole("Administrador"))
+{
+    <button type="button" id="btnCadastro" class="btn btn-primary"><i class="glyphicon glyphicon-calendar"></i> Cadastrar Feriado</button>
+}
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        <a asp-action="ExportarExcel" class="btn btn-success"><i class="glyphicon glyphicon-export"></i> Exportar</a>
+    }
+}
+@if (User.IsInRole("Gerente") || User.IsInRole("Supervisor") || User.IsInRole("Administrador"))
+{
+    <a asp-action="ListaJornadas" class="btn btn-primary"><i class="glyphicon glyphicon-flag"></i> Jornadas</a>
+}
+<hr />
+@{
+    if (Model == null || (Model != null && Model.Count() == 0))
+    {
+        <div>
+            <p>
+                Nenhum feriado encontrado.
+            </p>
+        </div>
+    }
+    else
+    {
+        <form asp-action="ListaFeriados">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    Data &agrave; partir de:
+                    <input type="date" class="form-control" max="9999-12-31" name="dataFeriadoInicio" id="dataFeriado" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    Até:
+                    <input type="date" class="form-control" max="9999-12-31" name="dataFeriadoFim" id="dataFeriado" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    Descri&ccedil;&atilde;o do Feriado:
+                    <input type="text" class="form-control" maxlength="30" name="descricaoFeriado" id="descricaoFeriado" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <br />
+                    <button type="submit" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> Pesquisar</button>
+                </div>
+            </div>
+        </form>
+    }
+}
+<br /><br /><br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoFeriado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescricaoFeriado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCriacao)
+            </th>
+            @if (User.IsInRole("Gerente") || User.IsInRole("Administrador"))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CodigoFeriado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescricaoFeriado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.CodigoExterno) - @Html.DisplayFor(modelItem => item.ApplicationUser.NomeUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataCriacao)
+                </td>
+                @if (User.IsInRole("Gerente") || User.IsInRole("Administrador"))
+                {
+                    <td>
+                        <a asp-action="EditarFeriado" asp-controller="Feriados" asp-route-id="@item.CodigoFeriado" class="btn btn-success btn-success"><i class="glyphicon glyphicon-edit"></i> Editar</a>
+                        <a asp-action="ExcluirFeriado" asp-controller="Feriados" asp-route-id="@item.CodigoFeriado" class="btn btn-danger" value="@item.CodigoFeriado"><i class="glyphicon glyphicon-trash"></i> Excluir</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="modal" class="modal fade" role="dialog" />
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("#btnCadastro").click(function () {
+                $("#modal").load("CadastrarFeriado", function () {
+                    $("#modal").modal();
+                })
+            });
+        })
+    </script>
+}
